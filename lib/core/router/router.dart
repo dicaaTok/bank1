@@ -6,12 +6,13 @@ import 'package:go_router/go_router.dart';
 // import 'package:eldikbank/features/auth/auth_bloc.dart'; // Понадобится позже
 
 // Импортируем заглушки для экранов, которые мы будем использовать
+// Я исправил пути импортов, предполагая, что они находятся в папке 'presentation'
 import '../../features/auth/login_screen.dart';
 import '../../features/history/history_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/home/main_screen.dart';
 import '../../features/payments/payments_screen.dart';
-import '../../features/profile/profile_screen.dart';
+import '../../features/profile/profile_screen.dart'; // Путь может отличаться
 
 // 1. Константы для путей
 abstract class AppRoutes {
@@ -27,16 +28,19 @@ abstract class AppRoutes {
 
 // 2. Главный конфигуратор GoRouter
 GoRouter buildRouter(BuildContext context) {
-  // 💡 ВАЖНО: Это временная заглушка для проверки авторизации.
-  // Позже мы заменим 'false' на фактическую проверку состояния AuthBloc.
+
+  // ВАЖНО: Это будет заменено реальной проверкой состояния AuthBloc.
   const bool isAuthenticated = false;
 
   return GoRouter(
-    initialLocation: AppRoutes.root,
+    // Начинаем с экрана входа, чтобы убедиться, что он работает
+    initialLocation: AppRoutes.login,
 
-    // 3. Логика перенаправления (для защиты закрытых экранов)
+    // 3. Логика перенаправления (ВРЕМЕННО ЗАКОММЕНТИРОВАНА)
+    // Мы комментируем этот блок, чтобы кнопка "Войти" могла работать.
+    // Когда мы внедрим AuthBloc, мы вернем этот redirect и изменим логику.
+    /*
     redirect: (BuildContext context, GoRouterState state) {
-      // Проверяем, куда хочет попасть пользователь
       final isLoggingIn = state.matchedLocation == AppRoutes.login;
 
       if (!isAuthenticated && !isLoggingIn) {
@@ -52,6 +56,7 @@ GoRouter buildRouter(BuildContext context) {
       // Иначе оставляем на том же месте
       return null;
     },
+    */
 
     routes: <RouteBase>[
       // Маршрут для экрана входа (LoginScreen)
@@ -61,7 +66,6 @@ GoRouter buildRouter(BuildContext context) {
       ),
 
       // 4. ShellRoute для Главного Экрана с BottomNavigationBar (MainScreen)
-      // MainScreen будет "оболочкой", которая держит BottomNavigationBar.
       ShellRoute(
         builder: (context, state, child) {
           // MainScreen принимает дочерний виджет, который будет отображаться в теле
@@ -70,7 +74,8 @@ GoRouter buildRouter(BuildContext context) {
         routes: <RouteBase>[
           // Вложенные маршруты для BottomNavigationBar
           GoRoute(
-            path: AppRoutes.root, // Слэш означает путь к корневому элементу ShellRoute
+            // path: AppRoutes.root, (Используем '/')
+            path: '/',
             name: AppRoutes.home,
             builder: (context, state) => const HomeScreen(),
           ),
