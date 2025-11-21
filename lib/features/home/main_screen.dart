@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
+import '../profile/profile_screen.dart';
 import 'home_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class _MainScreenState extends State<MainScreen> {
     const Center(child: Text("Платежи (В разработке)")), // Заглушка
     const Center(child: Text("История (В разработке)")), // Заглушка
     const Center(child: Text("Профиль (В разработке)")), // Заглушка
+    const ProfileScreen(),
   ];
 
   @override
